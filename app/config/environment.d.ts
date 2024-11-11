@@ -9,6 +9,7 @@ declare const config: {
   locationType: 'history' | 'hash' | 'none';
   rootURL: string;
   APP: Record<string, unknown>;
+  MAPBOX_ACCESS_TOKEN: string;
 };
 
 export default config;
