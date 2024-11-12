@@ -1,16 +1,16 @@
+import type Store from '@ember-data/store';
 import Route from '@ember/routing/route';
-import type { RentalModel, RentalResponse } from 'api/rentals';
-import type { GenericResponse } from 'api/response';
+import { service } from '@ember/service';
+import { findRecord } from '@ember-data/json-api/request';
+import type RentalModel from 'ember-playground/models/rental';
 
-interface RentalRouteParams {
-  rental_id: string;
-}
+export default class RentalRoute extends Route<RentalModel> {
+  @service declare store: Store;
 
-export default class RentalRoute extends Route<RentalModel, RentalRouteParams> {
-  async model(params: RentalRouteParams) {
-    const response = await fetch(`/api/rentals/${params.rental_id}.json`);
-    const { data } = (await response.json()) as GenericResponse<RentalResponse>;
-    const { id, type, attributes } = data;
-    return { id, type, ...attributes };
+  async model(params: Record<string, string>) {
+    const { content } = await this.store.request(
+      findRecord<RentalModel>('rental', params['rental_id'] ?? ''),
+    );
+    return content.data;
   }
 }

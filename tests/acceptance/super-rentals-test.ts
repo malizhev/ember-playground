@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, currentURL, click } from '@ember/test-helpers';
+import { visit, currentURL, click, find } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-playground/tests/helpers';
 
 module('Acceptance | super rentals', function (hooks) {
@@ -57,5 +57,17 @@ module('Acceptance | super rentals', function (hooks) {
 
     await click(linkSelectors.home);
     assert.strictEqual(currentURL(), '/');
+  });
+
+  test('viewing the details of a rental property', async function (assert) {
+    await visit('/');
+
+    await click('.rentals ul li:first-child a');
+    assert.strictEqual(currentURL(), '/rentals/grand-old-mansion');
+
+    const shareButton = find('a.share') as HTMLAnchorElement;
+    const shareURL = new URL(shareButton.href);
+
+    assert.strictEqual(shareURL.host, 'twitter.com');
   });
 });

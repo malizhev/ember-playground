@@ -1,3 +1,5 @@
+import type RouterService from '@ember/routing/router-service';
+import { service } from '@ember/service';
 import Component from '@glimmer/component';
 
 export interface ShareButtonSignature {
@@ -18,8 +20,13 @@ export interface ShareButtonSignature {
 const TWEET_INTENT = 'https://twitter.com/intent/tweet';
 
 export default class ShareButton extends Component<ShareButtonSignature> {
+  @service declare router: RouterService;
+
   get currentURL() {
-    return window.location.href;
+    return new URL(
+      this.router.currentURL ?? '',
+      window.location.origin,
+    ).toString();
   }
 
   get shareURL() {

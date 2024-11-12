@@ -2,6 +2,12 @@ import Application from '@ember/application';
 import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from 'ember-playground/config/environment';
+import { setBuildURLConfig } from '@ember-data/request-utils';
+
+setBuildURLConfig({
+  host: '',
+  namespace: 'api',
+});
 
 export default class App extends Application {
   modulePrefix = config.modulePrefix;

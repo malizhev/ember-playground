@@ -1,16 +1,15 @@
 import Route from '@ember/routing/route';
-import type { RentalResponse } from 'api/rentals';
-import type { GenericResponse } from 'api/response';
+import { service } from '@ember/service';
+// eslint-disable-next-line ember/use-ember-data-rfc-395-imports
+import type Store from '@ember-data/store';
+import { query } from '@ember-data/json-api/request';
+import type RentalModel from 'ember-playground/models/rental';
 
 export default class IndexRoute extends Route {
+  @service declare store: Store;
+
   async model() {
-    const response = await fetch('/api/rentals.json');
-    const { data } = (await response.json()) as GenericResponse<
-      RentalResponse[]
-    >;
-    return data.map((item) => {
-      const { id, type, attributes } = item;
-      return { id, type, ...attributes };
-    });
+    const response = await this.store.request(query<RentalModel>('rental'));
+    return response.content.data;
   }
 }
