@@ -30,7 +30,10 @@ module('Integration | Component | rental', function (hooks) {
     await render(hbs`<Rental @rental={{this.rental}}/>`);
 
     assert.dom('.rental').exists();
-    assert.dom('.rental .details h3').hasText('Grand Old Mansion');
+    assert
+      .dom('.rental .details h3 a')
+      .hasText('Grand Old Mansion')
+      .hasAttribute('href', '/rentals/grand-old-mansion');
     assert.dom('.rental .details .owner').hasText('Owner: Veruca Salt');
     assert.dom('.rental .details .type').hasText('Type: Standalone');
     assert.dom('.rental .details .location').hasText('Location: San Francisco');
